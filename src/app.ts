@@ -2,7 +2,7 @@ import 'express-async-errors';
 
 import { connectDb, disconnectDB, loadEnv } from '@/config';
 import { handleApplicationErrors } from '@/middlewares';
-import { authenticationRouter, healthRouter } from '@/routers';
+import { authenticationRouter, healthRouter, userRouter } from '@/routers';
 import cors from 'cors';
 import express, { Express } from 'express';
 
@@ -13,6 +13,7 @@ app.use(cors())
     .use(express.json())
     .use('/health', healthRouter)
     .use('/auth', authenticationRouter)
+    .use('/us', userRouter)
     .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {
