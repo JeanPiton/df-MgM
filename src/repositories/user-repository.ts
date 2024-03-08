@@ -7,14 +7,20 @@ async function findUserByEmail(email: string){
 
 async function createUser(email: string, password: string, name: string) {
     let user = await prisma.user.create({data:{
-        email: `${email}`,
-        name: `${name}`,
-        password: `${password}`
+        email: email,
+        name: name,
+        password: password
     }});
+    return user;
+}
+
+async function findUserByToken(token: string){
+    let user = await prisma.user.findFirst({where:{token: token}});
     return user;
 }
 
 export const userRepository = {
     findUserByEmail,
-    createUser
+    createUser,
+    findUserByToken
 }

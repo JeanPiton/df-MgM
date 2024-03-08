@@ -22,3 +22,9 @@ export enum ShortRole {
     CP = "COMPANY",
     US = "USER"
 }
+
+export enum AcronymRole {
+    SU = "SU",
+    CP = "CP",
+    US = "US"
+}

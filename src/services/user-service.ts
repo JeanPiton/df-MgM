@@ -1,12 +1,12 @@
-import { invalidUserError } from "@/errors";
-import { userRepository } from "@/repositories";
+import { conflictUserError } from "@/errors";
+import { userRepository, usersRepository } from "@/repositories";
 import bcrypt from 'bcrypt';
 
 async function createUser(params: userSignUpParams){
     const {email, password, name} = params;
    
-    let user = await userRepository.findUserByEmail(email);
-    if(user != null) throw invalidUserError("email is already in use");
+    let user = await usersRepository.findAllUsersByEmail(email);
+    if(user != null) throw conflictUserError("email already in use");
     
     const hash = bcrypt.hashSync(password,10);
     let created = await userRepository.createUser(email, hash, name);

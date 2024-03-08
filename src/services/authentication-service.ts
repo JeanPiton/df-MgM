@@ -19,13 +19,13 @@ async function signIn(params: SignInParams){
     return token;
 }
 
-async function getUserOrFail(email: String) {
+async function getUserOrFail(email: string) {
     const user = await usersRepository.findAllUsersByEmail(email);
     if(!user) throw invalidUserError("email/password not found");
     return user;
 }
 
-async function validateUserPasswordOrFail(password: String, userPassword: String){
+async function validateUserPasswordOrFail(password: string, userPassword: string){
     const isPasswordValid = await bcrypt.compare(password, userPassword);
     if(!isPasswordValid) throw invalidUserError("email/password not found");
 }
@@ -49,6 +49,6 @@ export const authenticationService = {
 }
 
 export type SignInParams = {
-    email: String,
-    password: String
+    email: string,
+    password: string
 }

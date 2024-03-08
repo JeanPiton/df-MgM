@@ -9,6 +9,12 @@ export function handleApplicationErrors(
     next: NextFunction,
   ) {
 
+    if(err.name === 'AuthenticationError'){
+      return res.status(httpStatus.UNAUTHORIZED).send({
+        message: err.message
+      })
+    }
+
     if(err.name === 'InvalidDataError'){
       return res.status(httpStatus.BAD_REQUEST).send({
         message: err.message
@@ -17,6 +23,12 @@ export function handleApplicationErrors(
 
     if(err.name === 'InvalidUserError'){
       return res.status(httpStatus.BAD_REQUEST).send({
+        message: err.message
+      })
+    }
+
+    if(err.name === 'ConflictUserError'){
+      return res.status(httpStatus.CONFLICT).send({
         message: err.message
       })
     }

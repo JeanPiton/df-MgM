@@ -1,4 +1,4 @@
-import { userSignUpPost } from '@/controllers/user-controller';
+import { userSignUpPost } from '@/controllers';
 import { validateBody } from '@/middlewares';
 import { userSignUpSchema } from '@/schemas';
 import { Router } from 'express';
