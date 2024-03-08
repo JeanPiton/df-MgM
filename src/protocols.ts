@@ -9,4 +9,16 @@ export type RequestError = {
     statusText: string;
     name: string;
     message: string;
-  };
+};
+
+export enum UserRole {
+    SU = "SuperUser",
+    CP = "Company",
+    US = "User"
+}
+
+export enum ShortRole {
+    SU = "SUPER",
+    CP = "COMPANY",
+    US = "USER"
+}
