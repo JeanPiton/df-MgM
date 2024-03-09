@@ -32,6 +32,12 @@ export function handleApplicationErrors(
         message: err.message
       })
     }
+
+    if(err.name === 'ConflictCampaignError'){
+      return res.status(httpStatus.CONFLICT).send({
+        message: err.message
+      })
+    }
   
     if (err.hasOwnProperty('status') && err.name === 'RequestError') {
       return res.status((err as RequestError).status).send({

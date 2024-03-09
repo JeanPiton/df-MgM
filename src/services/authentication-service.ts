@@ -1,5 +1,5 @@
 import { invalidUserError } from "@/errors";
-import { ShortRole, UserRole } from "@/protocols";
+import { AcronymRole, ShortRole, UserRole } from "@/protocols";
 import { authenticationRepository, usersRepository } from "@/repositories";
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
@@ -31,9 +31,9 @@ async function validateUserPasswordOrFail(password: string, userPassword: string
 }
 
 function shortRole(role: string){
-    if(role === ShortRole.SU) return "SU"
-    if(role === ShortRole.CP) return "CP"
-    if(role === ShortRole.US) return "US"
+    if(role === ShortRole.SU) return AcronymRole.SU
+    if(role === ShortRole.CP) return AcronymRole.CP
+    if(role === ShortRole.US) return AcronymRole.US
     throw new Error("role error")
 }
 
