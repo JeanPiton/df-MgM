@@ -2,7 +2,7 @@ import { conflictCampaignError } from "@/errors";
 import { campaignRepository } from "@/repositories";
 import { Prisma } from "@prisma/client";
 
-async function createCompany(params: campaignCreateParams){
+async function createCampaign(params: campaignCreateParams){
     const {name, desc, link, currency, points, prize} = params;
     let prizes = prize as Prisma.JsonArray;
     
@@ -13,8 +13,14 @@ async function createCompany(params: campaignCreateParams){
     return created;
 }
 
+async function findCampaignsName(name: string){
+    let campaigns = await campaignRepository.findCampaignByNameContain(name);
+    return campaigns;
+}
+
 export const campaignService = {
-    createCompany
+    createCampaign,
+    findCampaignsName
 }
 
 export type campaignCreateParams = {

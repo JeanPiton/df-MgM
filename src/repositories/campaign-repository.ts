@@ -6,6 +6,11 @@ async function findCampaignByName(name: string){
     return campaign;
 }
 
+async function findCampaignByNameContain(name: string){
+    let campaign = await prisma.campaign.findMany({where:{name: {contains: name}}});
+    return campaign;
+}
+
 async function createCampaign(name: string, desc: string, link: string, currency: string, points: number, prize: Prisma.JsonArray){
     let campaign = await prisma.campaign.create({data:{
         name: name,
@@ -20,5 +25,6 @@ async function createCampaign(name: string, desc: string, link: string, currency
 
 export const campaignRepository = {
     findCampaignByName,
+    findCampaignByNameContain,
     createCampaign
 }
