@@ -28,6 +28,8 @@ export function validateAuth(roles: AcronymRole[]){
         }
 
         if(!auth) throw authenticationError("invalid credential");
+
+        req.locals = {user: auth};
         
         next();
     }

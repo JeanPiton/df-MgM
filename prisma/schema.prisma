@@ -60,7 +60,7 @@ model Link {
   userId String @db.ObjectId
   url String
   short String
-  reward Json[]
+  reward Json
 }
 
 enum Role {
