@@ -1,5 +1,5 @@
-import { conflictUserError } from "@/errors";
-import { userRepository, usersRepository } from "@/repositories";
+import { conflictUserError, invalidUserError } from "@/errors";
+import { linkReward, userRepository, usersRepository } from "@/repositories";
 import bcrypt from 'bcrypt';
 
 async function createUser(params: userSignUpParams){
@@ -13,8 +13,18 @@ async function createUser(params: userSignUpParams){
     return created;
 }
 
+async function receiveReward(userId: string, reward: linkReward, pt){
+    let user = await userRepository.findUserById(userId,pt);
+    if(!user) throw invalidUserError("User not found");
+    let newCurrency:linkReward[] = user.currency as linkReward[]
+    let index = newCurrency.findIndex((item:linkReward) => item.currency === reward.currency);
+    index === -1?newCurrency.push(reward):newCurrency[index].points +=  reward.points;
+    await userRepository.giveUserReward(userId,newCurrency,pt);
+}
+
 export const userService = {
-    createUser
+    createUser,
+    receiveReward
 }
 
 export type userSignUpParams = {

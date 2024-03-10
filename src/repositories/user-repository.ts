@@ -19,8 +19,23 @@ async function findUserByToken(token: string){
     return user;
 }
 
+async function findUserById(id: string, pInstance=prisma){
+    let user = await pInstance.user.findUnique({where:{id:id}});
+    return user;
+}
+
+async function giveUserReward(id: string, wallet: {currency:string,points:number}[], pInstance){
+    await pInstance.user.update({where: {id: id},
+        data: {
+            currency: wallet
+        }
+    })
+}
+
 export const userRepository = {
     findUserByEmail,
     createUser,
-    findUserByToken
+    findUserByToken,
+    findUserById,
+    giveUserReward
 }

@@ -11,3 +11,11 @@ export async function linkGenerate(req: Request, res: Response) {
 
   return res.status(httpStatus.CREATED).send(result);
 }
+
+export async function linkReroute(req: Request, res:Response) {
+    const { short } = req.params;
+
+    const result = await linkService.getUrlLink(short);
+
+    res.redirect(result);
+}

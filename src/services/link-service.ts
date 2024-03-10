@@ -1,4 +1,4 @@
-import { invalidDataError } from "@/errors";
+import { invalidDataError, notFoundError } from "@/errors";
 import { campaignRepository, linkRepository } from "@/repositories";
 import { nanoid } from 'nanoid';
 
@@ -15,6 +15,19 @@ async function createLink(id: string, userId: string, path: string){
     return `${path}/link/${short}`;
 }
 
+async function getUrlLink(short: string){
+    if(!short) throw invalidDataError("short missing");
+    if(short.length != 8) throw invalidDataError("invalid short format");
+    
+    let link = await linkRepository.findLinkByShort(short);
+    if(!link) throw notFoundError("link not found");
+    
+    let destiny = await linkRepository.requestLink(short);
+   
+    return destiny;
+}
+
 export const linkService = {
-    createLink
+    createLink,
+    getUrlLink
 }

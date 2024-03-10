@@ -38,6 +38,12 @@ export function handleApplicationErrors(
         message: err.message
       })
     }
+
+    if(err.name === 'NotFoundError'){
+      return res.status(httpStatus.NOT_FOUND).send({
+        message: err.message
+      })
+    }
   
     if (err.hasOwnProperty('status') && err.name === 'RequestError') {
       return res.status((err as RequestError).status).send({
