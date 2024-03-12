@@ -1,4 +1,5 @@
 import { prisma } from "@/config";
+import { linkReward } from "./link-repository";
 
 async function findUserByEmail(email: string){
     let user = await prisma.user.findFirst({where:{email: `${email}`}});;
@@ -24,10 +25,18 @@ async function findUserById(id: string, pInstance=prisma){
     return user;
 }
 
-async function giveUserReward(id: string, wallet: {currency:string,points:number}[], pInstance){
+async function setUserCurrency(id: string, wallet: linkReward[], pInstance){
     await pInstance.user.update({where: {id: id},
         data: {
             currency: wallet
+        }
+    })
+}
+
+async function setUserInventory(id: string, inventory: {name: string, amount: number}[], pInstance){
+    await pInstance.user.update({where: {id: id},
+        data: {
+            inventory: inventory
         }
     })
 }
@@ -37,5 +46,6 @@ export const userRepository = {
     createUser,
     findUserByToken,
     findUserById,
-    giveUserReward
+    setUserCurrency,
+    setUserInventory
 }

@@ -17,3 +17,12 @@ export async function campaignNameSearch(req: Request, res: Response) {
 
   return res.status(httpStatus.OK).send(result);
 }
+
+export async function itemBuy(req: Request, res: Response) {
+  const { id, item } = req.params;
+  const user = req.locals.user;
+
+  const result = await campaignService.buyCampaignItem(id, parseInt(item), user);
+
+  return res.status(httpStatus.OK).send(result);
+}

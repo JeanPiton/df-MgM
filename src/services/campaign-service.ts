@@ -1,6 +1,7 @@
-import { conflictCampaignError } from "@/errors";
+import { conflictCampaignError, invalidDataError } from "@/errors";
 import { campaignRepository } from "@/repositories";
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
+import { shopItem, userService } from "./user-service";
 
 async function createCampaign(params: campaignCreateParams){
     const {name, desc, link, currency, points, prize} = params;
@@ -18,9 +19,23 @@ async function findCampaignsName(name: string){
     return campaigns;
 }
 
+async function buyCampaignItem(idCamp: string, itemId: number, user: User){
+    let campaign = await campaignRepository.findCampaignById(idCamp);
+    if(!campaign) throw invalidDataError("campaign not found");
+
+    if(!Number.isInteger(itemId)) throw invalidDataError("item invalid");
+    let item = await campaignRepository.findCampaignItem(idCamp, itemId) as shopItem;
+    if(!item) throw invalidDataError("item not found");
+    
+    let itemBought = await userService.userBuyItem(user, item, campaign.currency);
+
+    return itemBought;
+}
+
 export const campaignService = {
     createCampaign,
-    findCampaignsName
+    findCampaignsName,
+    buyCampaignItem
 }
 
 export type campaignCreateParams = {
