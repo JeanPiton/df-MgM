@@ -13,9 +13,9 @@ app.use(cors())
     .use(express.json())
     .use('/health', healthRouter)
     .use('/auth', authenticationRouter)
-    .use('/us', userRouter)
-    .use('/cp', companyRouter)
-    .use('/camp',campaignRouter)
+    .use('/user', userRouter)
+    .use('/company', companyRouter)
+    .use('/campaign',campaignRouter)
     .use('/link',linkRouter)
     .use(handleApplicationErrors);
 

@@ -58,6 +58,7 @@ export function handleApplicationErrors(
     }
   
     if (err.name.includes('PrismaClient')) {
+      console.log(err);
       return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
         message: "Database error",
       });

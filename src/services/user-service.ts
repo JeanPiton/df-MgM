@@ -35,7 +35,8 @@ async function userBuyItem(user: User, itemShop: shopItem, itemCurrency: string)
     }
 
     let iIndex = inventory.findIndex((item:inventoryItem) => item.name === itemShop.name);
-    iIndex === -1?inventory.push({name: itemShop.name, amount:1}):inventory[iIndex].amount++;
+    delete itemShop.cost;
+    iIndex === -1?inventory.push({...itemShop, amount:1}):inventory[iIndex].amount++;
 
     await campaignRepository.buyCampaignItem(user.id,wallet,inventory);
 

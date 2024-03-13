@@ -1,16 +1,21 @@
-import { conflictCampaignError, invalidDataError } from "@/errors";
-import { campaignRepository } from "@/repositories";
+import { conflictCampaignError, invalidDataError, notFoundError } from "@/errors";
+import { campaignRepository, companyRepository } from "@/repositories";
 import { Prisma, User } from "@prisma/client";
 import { shopItem, userService } from "./user-service";
 
 async function createCampaign(params: campaignCreateParams){
-    const {name, desc, link, currency, points, prize} = params;
+    const {companyId, name, desc, link, currency, points, prize} = params;
     let prizes = prize as Prisma.JsonArray;
+
+    if(!companyId) throw invalidDataError("missing company id");
     
-    let campaign = await campaignRepository.findCampaignByName(name);
-    if(campaign != null) throw conflictCampaignError(`${name} already exists`)
+    let company = await companyRepository.findCompanyById(companyId);
+    if(!company) throw notFoundError(`company not found`);
+
+    let campaign = await campaignRepository.findCampaignByNameAndCompanyId(name,companyId);
+    if(campaign != null) throw conflictCampaignError(`${name} already exists`);
     
-    let created = await campaignRepository.createCampaign(name,desc,link,currency,points,prizes)
+    let created = await campaignRepository.createCampaign(companyId,name,desc,link,currency,points,prizes);
     return created;
 }
 
@@ -48,4 +53,5 @@ export type campaignCreateParams = {
         name: string,
         cost: number
     }[]
+    companyId?: string
 }

@@ -9,6 +9,11 @@ async function findCampaignByName(name: string){
     return campaign;
 }
 
+async function findCampaignByNameAndCompanyId(name: string, companyId: string){
+    let campaign = await prisma.campaign.findFirst({where:{name: name, companyId: companyId}});
+    return campaign;
+}
+
 async function findCampaignByNameContain(name: string){
     let campaign = await prisma.campaign.findMany({where:{name: {contains: name}}});
     return campaign;
@@ -19,14 +24,15 @@ async function findCampaignById(id: string){
     return campaign;
 }
 
-async function createCampaign(name: string, desc: string, link: string, currency: string, points: number, prize: Prisma.JsonArray){
+async function createCampaign(companyId: string, name: string, desc: string, link: string, currency: string, points: number, prize: Prisma.JsonArray){
     let campaign = await prisma.campaign.create({data:{
         name: name,
         desc: desc,
         link: link,
         currency: currency,
         points: points,
-        prize: prize
+        prize: prize,
+        companyId: companyId
     }});
     return campaign;
 }
@@ -45,6 +51,7 @@ async function buyCampaignItem(userId:string, wallet: linkReward[], inventory: i
 
 export const campaignRepository = {
     findCampaignByName,
+    findCampaignByNameAndCompanyId,
     findCampaignByNameContain,
     findCampaignById,
     findCampaignItem,

@@ -1,11 +1,14 @@
+import { ShortRole } from '@/protocols';
 import { campaignCreateParams, campaignService } from '@/services';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 
 export async function campaignCreate(req: Request, res: Response) {
-  const { name, desc, link, currency, points, prize } = req.body as campaignCreateParams;
+  let { companyId, name, desc, link, currency, points, prize } = req.body as campaignCreateParams;
+  const user = req.locals.user;
+  companyId = user.role === ShortRole.SU?companyId:user.id;
   
-  const result = await campaignService.createCampaign({name, desc, link, currency, points, prize});
+  const result = await campaignService.createCampaign({companyId, name, desc, link, currency, points, prize});
 
   return res.status(httpStatus.CREATED).send(result);
 }

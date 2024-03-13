@@ -20,8 +20,14 @@ async function findCompanyByToken(token: string){
     return company;
 }
 
+async function findCompanyById(id: string){
+    let company = await prisma.company.findUnique({where:{id: id}});
+    return company;
+}
+
 export const companyRepository = {
     findCompanyByEmail,
     createCompany,
-    findCompanyByToken
+    findCompanyByToken,
+    findCompanyById
 }

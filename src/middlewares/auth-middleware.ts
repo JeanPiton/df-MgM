@@ -2,6 +2,7 @@ import { authenticationError } from "@/errors";
 import { AcronymRole } from "@/protocols";
 import { companyRepository, superRepository, userRepository } from "@/repositories";
 import { NextFunction, Request, Response } from 'express';
+import httpStatus from "http-status";
 
 export function validateAuth(roles: AcronymRole[]){
     return async(req:Request, res:Response, next:NextFunction) => {
@@ -12,7 +13,10 @@ export function validateAuth(roles: AcronymRole[]){
 
         const role = rawToken.slice(0,2);
 
-        if(!roles.includes(role)) throw authenticationError("user dont have access");
+        if(!roles.includes(role)){
+            if(role == AcronymRole.SU) return res.status(httpStatus.NO_CONTENT).send(`route for ${roles}`);
+            throw authenticationError("user dont have access");
+        } 
         
         let auth
         switch (role) {
@@ -27,7 +31,7 @@ export function validateAuth(roles: AcronymRole[]){
                 break;         
         }
 
-        if(!auth) throw authenticationError("invalid credential");
+        if(!auth) throw authenticationError("invalid credential"); //su 204
 
         req.locals = {user: auth};
         

@@ -28,6 +28,7 @@ model Company {
   name String
   password String
   contact String
+  campaigns Campaign[]
   token String?
   role Role @default(COMPANY)
 }
@@ -40,6 +41,8 @@ model Campaign {
   currency String? @default("points")
   points Int? @default(1)
   prize Json[]
+  company Company @relation(fields: [companyId], references: [id])
+  companyId String @db.ObjectId
 }
 
 model User {
