@@ -31,7 +31,7 @@ export function validateAuth(roles: AcronymRole[]){
                 break;         
         }
 
-        if(!auth) throw authenticationError("invalid credential"); //su 204
+        if(!auth) throw authenticationError("invalid credential");
 
         req.locals = {user: auth};
         
